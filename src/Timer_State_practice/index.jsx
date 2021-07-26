@@ -1,73 +1,119 @@
 import React, { Component } from "react";
-
-export class Timer extends Component {
+export class Practice extends Component {
   state = {
-    count: 0,
+    setTimer: 0,
+    value: "",
+    errMsg: "",
   };
-  intervalId = null; // initialilly intervalId is null
-  incrementCount = () => {
-    this.setState({ count: this.state.count + 1 });
+
+  inputType = this.state.setTimer;
+
+  setTimerfunc = () => {
+    // if (!Number(this.inputType)) {
+    //     this.setState({ errMsg: "input should be number" })
+    // } else {
+
+    //     this.setState({ errMsg: "" })
+    // }
+    this.timerStart();
   };
-  decrementCount = () => {
-    this.state.count > 0 && this.setState({ count: this.state.count - 1 });
+  setTime = (e) => {
+    this.setState({ setTimer: e.target.value * 1000 * 60, value: e.target.value });
+    this.setState({ errMsg: "" });
   };
+
   intervalId = null;
-  startTimer = () => {
-    if (this.state.count > 0 && !this.intervalId) {
+  timerStart = () => {
+    if (this.state.setTimer > 0 && !this.intervalId) {
       this.intervalId = setInterval(() => {
-        this.setState({ count: this.state.count - 1 }, () => {
-          if (this.state.count === 0) {
-            alert("Counter Finished");
+        this.setState({ setTimer: this.state.setTimer - 1, value: "" }, () => {
+          if (this.state.setTimer === 0) {
+            alert("timer Finished");
             clearInterval(this.intervalId);
             this.intervalId = null;
           }
         });
-      }, 1000);
+      }, 1);
     }
   };
-
   stopTimer = () => {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-      this.intervalId = null;
-    }
-  };
-  resetTimer = () => {
-    this.setState({ count: 0 });
     clearInterval(this.intervalId);
     this.intervalId = null;
   };
 
-  //// here is only one componet task is divide this into multiple component
-  /// task work with second and minutes
-  render() {
-    return (
-      <div className="container m-auto">
-        <p>Lets Create a timer with State </p>
+  resetTimer = () => {
+    this.setState({ setTimer: 0, value: "" });
+    clearInterval(this.intervalId);
+    this.intervalId = null;
+  };
 
-        <div className="flex justify-center">
-          <button onClick={this.decrementCount} className={`px-3 py-2  m-2 ${this.state.count <= 0 ? "bg-gray-50" : "bg-gray-200"}`}>
-            -
-          </button>
-          <h1 className="text-xl">{this.state.count}</h1>
-          <button onClick={this.incrementCount} className="px-3 py-2 bg-gray-200 m-2">
-            +
-          </button>
+  resumeTimer = () => {
+    this.setState({ setTimer: this.state.setTimer, value: "" });
+    this.timerStart();
+  };
+
+  // task :  i can update this timer including resume option
+  // task : i Can cear the input value after clicking settimer stoptimer and resetTimer
+
+  // handle data type
+  handleBlur = () => {
+    if (!Number(this.state.value)) {
+      // alert("input should be number");
+      this.setState({ errMsg: "input should be number" });
+    }
+  };
+  render() {
+    let name = "saymun";
+    let miliSecond = this.state.setTimer;
+    let second = Math.round(this.state.setTimer / 1000);
+    let minute = Math.floor(this.state.setTimer / 1000 / 60) <= 0 ? 0 : Math.floor(Math.floor(this.state.setTimer / 1000 / 60));
+    return (
+      <div>
+        <h2 className="text-center text-lg uppercase">{name}</h2>
+        <div className="text-center flex justify-between w-1/2 mx-auto my-2">
+          <p>
+            {`${miliSecond > 0 ? "Remaining" : ""}`} MiliSecond : {miliSecond}
+          </p>
+          <p>
+            {`${second > 0 ? "Remaining" : ""}`} Second : {second}
+          </p>
+          <p>
+            {`${minute > 0 ? "Remaining" : ""}`} Minute : {minute}
+          </p>
         </div>
-        <div className="timer flex justify-center">
-          <button onClick={this.startTimer} className="px-3 py-2 bg-gray-200 m-2">
-            Start
-          </button>
-          <button className="px-3 py-2 bg-gray-200 m-2" onClick={this.stopTimer}>
-            Stop
-          </button>
-          <button className="px-3 py-2 bg-gray-200 m-2" onClick={this.resetTimer}>
-            Reset
-          </button>
+        <div className="flex flex-col w-1/3 m-auto ">
+          {/* I can get set time from input  */}
+          <input
+            id="TimerInput"
+            className="border-2 shadow p-2 mt-5"
+            name="inputTime"
+            type="number"
+            onChange={this.setTime}
+            placeholder="set your desired time for set timer"
+            value={this.state.value}
+            onBlur={this.handleBlur}
+          />
+          <p className="text-red-500">{this.state.errMsg}</p>
+          <div className="buttons flex items-center justify-between p-2 py-5">
+            <button className="bg-gray-800 text-white py-1 px-2" onClick={this.setTimerfunc}>
+              {/* SetTime for {Math.floor(this.state.setTimer / 1000 / 60) === 0 ? null : Math.floor(this.state.setTimer / 1000 / 60)} Minute */}
+              {/* Set Timer {minute === 0 ? "" : `for ${minute} ${minute > 1 ? "Minutes" : "Minute"}`} */}
+              Start
+            </button>
+            <button className="bg-red-400 text-white py-1 px-2" onClick={this.stopTimer}>
+              Stop
+            </button>
+            <button className="bg-gray-800 text-white py-1 px-2" onClick={this.resetTimer}>
+              Reset
+            </button>
+            <button className="bg-green-400 text-white py-1 px-2" onClick={this.resumeTimer}>
+              Resume
+            </button>
+          </div>
         </div>
       </div>
     );
   }
 }
 
-export default Timer;
+export default Practice;

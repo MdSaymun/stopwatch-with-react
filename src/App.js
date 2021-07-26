@@ -1,5 +1,5 @@
 import React from "react";
-import TimerApp from "./Timer_State_practice/timeFunc";
+import TimerApp from "./Timer_State_practice";
 const App = () => {
   return (
     <div>
