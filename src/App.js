@@ -1,25 +1,14 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
+import React from "react";
+// import TimerApp from "./Timer_State_practice/timeFunc";
+import PracTimer from "./Timer_State_practice/Practice";
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {/* <TimerApp /> */}
+      <PracTimer />
+      <h1 className="text-center bg-gray-700 py-1 px-2 text-gray-50">Lorem ipsum dolor sit.</h1>
     </div>
   );
-}
+};
 
 export default App;
